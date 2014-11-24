@@ -29,5 +29,39 @@ class Stack(collections.Iterable):
             self._item = None
             self._next = None
 
+class BinarySearchST(object):
+    def __init__(self):
+        self._keys = []
+        self._vals = []
+
+    def get(self, key):
+        i = self.rank(key)
+        if i < len(self._keys) and self._keys[i] == key:
+            return self._vals[i]
+
+        return None
+
+    def put(self, key, val):
+        i = self.rank(key)
+        if i < len(self._keys) and self._keys[i] == key:
+            self._vals[i] = val
+            return
+
+        self._keys.insert(i, key)
+        self._vals.insert(i, val)
+
+    def rank(self, key):
+        # Binary search
+        lo, hi = 0, len(self._keys) - 1
+        while lo <= hi:
+            mid = (lo + hi) / 2
+            if key < self._keys[mid]:
+                hi = mid - 1
+            elif key > self._keys[mid]:
+                lo = mid + 1
+            else:
+                return mid
+        return lo
+
 if __name__ == '__main__':
     pass
