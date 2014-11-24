@@ -36,19 +36,37 @@ class BinarySearchST(object):
 
     def get(self, key):
         i = self.rank(key)
-        if i < len(self._keys) and self._keys[i] == key:
+        if i < self.size() and self._keys[i] == key:
             return self._vals[i]
 
         return None
 
     def put(self, key, val):
         i = self.rank(key)
-        if i < len(self._keys) and self._keys[i] == key:
+        if i < self.size() and self._keys[i] == key:
             self._vals[i] = val
             return
 
         self._keys.insert(i, key)
         self._vals.insert(i, val)
+
+    def size(self):
+        return len(self._keys)
+
+    def delete(self, key):
+        i = self.rank(key)
+        if i < self.size() and self._keys[i] == key:
+            self._keys.pop(i)
+            self._vals.pop(i)
+
+    def contains(self, key):
+        return self.get(key) is not None
+
+    def is_empty(self):
+        return self.size() <= 0
+
+    def keys(self):
+        return self._keys
 
     def rank(self, key):
         # Binary search
