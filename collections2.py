@@ -100,5 +100,61 @@ class BinarySearchST(ST):
                 return mid
         return lo
 
+class BST(ST):
+    def __init__(self):
+        self._root = None
+
+    def get(self, key):
+        return self._get(self._root, key)
+
+    def put(self, key, val):
+        self._root = self._put(self._root, key, val)
+
+    def size(self):
+        return self._size(self._root)
+
+    def delete(self, key):
+        pass
+
+    def keys(self):
+        # Implement iteration with generator
+        # Depth-First Search, In-Order
+        stack = Stack()
+        current = self._root
+        while not stack.is_empty() or current:
+            if current is not None:
+                stack.push(current)
+                current = current._left
+            else:
+                current = stack.pop()
+                yield current._val
+                current = current._right
+
+    def _get(self, x, key):
+        if x is None:       return None
+        if   key < x._key:  return self._get(x._left, key)
+        elif key > x._key:  return self._get(x._right, key)
+        else:               return x._val
+
+    def _put(self, x, key, val):
+        if x is None:       return self.Node(key, val, 1)
+        if   key < x._key:  x._left  = self._put(x._left, key, val)
+        elif key > x._key:  x._right = self._put(x._right, key, val)
+        else:               x._val = val
+
+        x._N = self._size(x._left) + self._size(x._right) + 1
+        return x
+
+    def _size(self, x):
+        return 0 if x is None else x._N
+
+    class Node(object):
+        def __init__(self, key, val, N):
+            self._key = key
+            self._val = val
+            self._N = N
+            self._left = None
+            self._right = None
+
 if __name__ == '__main__':
     pass
