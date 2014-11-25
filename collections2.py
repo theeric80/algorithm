@@ -2,24 +2,27 @@ import collections
 
 class Stack(collections.Iterable):
     def __init__(self):
-        self.first = None
+        self._first = None
 
     def push(self, item):
         # Insert at the beginning
         node = self.Node()
         node._item = item
-        node._next = self.first
-        self.first = node
+        node._next = self._first
+        self._first = node
 
     def pop(self):
         # Remove from the beginning
-        node = self.first
-        self.first = self.first._next
+        node = self._first
+        self._first = self._first._next
         return node._item
+
+    def is_empty(self):
+        return self._first is None
 
     def __iter__(self):
         # Implement iteration with generator
-        current = self.first
+        current = self._first
         while current is not None:
             yield current._item
             current = current._next
