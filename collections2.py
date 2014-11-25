@@ -17,6 +17,9 @@ class Stack(collections.Iterable):
         self._first = self._first._next
         return node._item
 
+    def top(self):
+        return self._first._item
+
     def is_empty(self):
         return self._first is None
 
@@ -144,6 +147,34 @@ class BST(ST):
 
         x._N = self._size(x._left) + self._size(x._right) + 1
         return x
+
+    def _put_non_recursive(self, key, val):
+        if self._root is None:
+            self._root = self.Node(key, val, 1)
+            return
+
+        stack = Stack()
+        x = self._root
+        while True:
+            if x is None:
+                x = self.Node(key, val, 1)
+                parent = stack.top()
+                if key > parent._key: parent._right = x
+                else:                 parent._left = x
+                break
+            elif key < x._key:
+                stack.push(x)
+                x = x._left
+            elif key > x._key:
+                stack.push(x)
+                x = x._right
+            else:
+                x._val = val
+                break
+
+        # update nodes on search path
+        for x in stack:
+            x._N = self._size(x._left) + self._size(x._right) + 1
 
     def _size(self, x):
         return 0 if x is None else x._N
