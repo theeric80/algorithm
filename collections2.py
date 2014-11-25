@@ -29,7 +29,29 @@ class Stack(collections.Iterable):
             self._item = None
             self._next = None
 
-class BinarySearchST(object):
+class ST(object):
+    def get(self, key):
+        return None
+
+    def put(self, key, val):
+        pass
+
+    def size(self):
+        return 0
+
+    def delete(self, key):
+        self.put(key, None)
+
+    def contains(self, key):
+        return self.get(key) is not None
+
+    def is_empty(self):
+        return self.size() <= 0
+
+    def keys(self):
+        return None
+
+class BinarySearchST(ST):
     def __init__(self):
         self._keys = []
         self._vals = []
@@ -58,12 +80,6 @@ class BinarySearchST(object):
         if i < self.size() and self._keys[i] == key:
             self._keys.pop(i)
             self._vals.pop(i)
-
-    def contains(self, key):
-        return self.get(key) is not None
-
-    def is_empty(self):
-        return self.size() <= 0
 
     def keys(self):
         return self._keys
