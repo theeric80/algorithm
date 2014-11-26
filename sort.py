@@ -130,7 +130,15 @@ def quicksort_3(a):
     sort(a, 0, len(a) - 1)
 
 def heapsort(a):
-    # TODO: swim
+    def swim(k):
+        while True:
+            # zero-based indexing
+            j = (k - 1) / 2
+            if j < 0 or not less(a[j], a[k]):
+                break
+            exch(a, k, j)
+            k = j
+
     def sink(k, hi):
         while True:
             # zero-based indexing
@@ -142,12 +150,22 @@ def heapsort(a):
             exch(a, k, j)
             k = j
 
-    last = len(a) - 1
+    N = len(a)
+    last = N - 1
 
-    # heapify: use sink, from right to left
-    hi = (last - 1) / 2 # hi: the parent of the last node
-    for i in xrange(hi, -1, -1):
-        sink(i, last)
+    def heapify_swim():
+        # use swim, from left to right
+        for i in xrange(1, N):
+            swim(i)
+
+    def heapify_sink():
+        # use sink, from right to left
+        hi = (last - 1) / 2 # hi: the parent of the last node
+        for i in xrange(hi, -1, -1):
+            sink(i, last)
+
+    #heapify_swim()
+    heapify_sink()
 
     # sortdown
     for hi in xrange(last, 0, -1):
