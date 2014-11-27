@@ -187,5 +187,66 @@ class BST(ST):
             self._left = None
             self._right = None
 
+class RedBlackBST(BST):
+    def __init__(self):
+        super(RedBlackBST, self).__init__()
+
+    def put(self, key, val):
+        self._root = self._put(self._root, key, val)
+        self._root._color = self.BLACK # keep the root BLACK
+
+    def _put(self, h, key, val):
+        if h is None:       return self.Node(key, val, 1, self.RED)
+        if   key < h._key:  h._left  = self._put(h._left, key, val)
+        elif key > h._key:  h._right = self._put(h._right, key, val)
+        else:               h._val = val
+
+        # local transformation
+        if self._is_red(h._right) and not self._is_red(h._left):    h = self._rotate_left(h)
+        if self._is_red(h._left)  and self._is_red(h._left._left):  h = self._rotate_right(h)
+        if self._is_red(h._left)  and self._is_red(h._right):       self._flip_colors(h)
+
+        h._N = self._size(h._left) + self._size(h._right) + 1
+        return h
+
+    def _is_red(self, h):
+        return bool(h is not None) and h._color == self.RED
+
+    def _rotate_left(self, h):
+        x = h._right
+        h._right = x._left
+        x._left  = h
+
+        x._color = h._color # preserve the color in the parent
+        h._color = self.RED
+
+        x._N = h._N
+        h._N = self._size(h._left) + self._size(h._right) + 1
+        return x
+
+    def _rotate_right(self, h):
+        x = h._left
+        h._left  = x._right
+        x._right = h
+
+        x._color = h._color # preserve the color in the parent
+        h._color = self.RED
+
+        x._N = h._N
+        h._N = self._size(h._left) + self._size(h._right) + 1
+        return x
+
+    def _flip_colors(self, h):
+        h._color = self.RED
+        h._left._color  = self.BLACK
+        h._right._color = self.BLACK
+
+    RED = True
+    BLACK = False
+    class Node(BST.Node):
+        def __init__(self, key, val, N, color):
+            super(RedBlackBST.Node, self).__init__(key, val, N)
+            self._color = color
+
 if __name__ == '__main__':
     pass
