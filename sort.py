@@ -172,6 +172,24 @@ def heapsort(a):
         exch(a, 0, hi)
         sink(0, hi - 1)
 
+def counting_sort(a, R):
+    N = len(a)
+    count = [0 for i in xrange(R)]
+    aux = a[:]
+
+    # count[i]: the number of elements equal to i
+    for i in xrange(N):
+        count[a[i]] = count[a[i]] + 1
+
+    # count[i]: the number of elements less than or equal to i
+    for r in xrange(1, R):
+        count[r] = count[r] + count[r-1]
+
+    for i in xrange(N-1, -1, -1):
+        j = aux[i]
+        a[count[j] - 1] = j # a: zero-based indexing
+        count[j] = count[j] - 1
+
 if __name__ == '__main__':
     import random
     a = range(0, 10)
@@ -185,6 +203,7 @@ if __name__ == '__main__':
         #quicksort(a)
         #quicksort_3(a)
         heapsort(a)
+        #counting_sort(a, 10)
         assert(is_sorted(a))
 
     print 'sorted: {}'.format(a)
