@@ -78,22 +78,26 @@ def quicksort(a):
     # Hoare partition
     def partition(a, lo, hi):
         v = a[lo]
-        i, j = lo, hi
+        i, j = lo-1, hi+1
         while True:
-            while i < hi and less(a[i], v):
-                i += 1
-            while j > lo and less(v, a[j]):
+            # do-while
+            while True:
                 j -= 1
-            if i >= j:
-                break
-            exch(a, i, j)
-        # a[lo, j] <= v and a[j+1, hi] >= v
-        return j
+                if a[j] <= v: break
+            # do-while
+            while True:
+                i += 1
+                if a[i] >= v: break
+            if i < j:
+                exch(a, i, j)
+            else:
+                # a[lo, j] <= v and a[j+1, hi] >= v
+                return j
 
     def sort(a, lo, hi):
         if hi <= lo: return
         j = partition(a, lo, hi)
-        sort(a, lo, j-1)
+        sort(a, lo, j)
         sort(a, j+1, hi)
 
     sort(a, 0, len(a) - 1)
@@ -193,6 +197,7 @@ def counting_sort(a, R):
 if __name__ == '__main__':
     import random
     a = range(0, 10)
+    a.extend(range(0, 10))
 
     for i in xrange(10):
         random.shuffle(a)
@@ -200,9 +205,9 @@ if __name__ == '__main__':
         #insertion_sort(a)
         #bubble_sort(a)
         #mergesort(a)
-        #quicksort(a)
+        quicksort(a)
         #quicksort_3(a)
-        heapsort(a)
+        #heapsort(a)
         #counting_sort(a, 10)
         assert(is_sorted(a))
 
