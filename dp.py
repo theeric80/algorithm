@@ -33,6 +33,19 @@ class CutRod(object):
             r[j] = q
         return r[n]
 
+class LCSLength(object):
+    def lcs_length(self, X, Y):
+        X, Y = [0]+X, [0]+Y
+        m, n = len(X), len(Y)
+        c = [[0] * n for i in xrange(m)]
+        for i in xrange(1, m):
+            for j in xrange(1, n):
+                if X[i] == Y[j]:
+                    c[i][j] = c[i-1][j-1] + 1
+                elif X[i] != Y[j]:
+                    c[i][j] = max(c[i-1][j], c[i][j-1])
+        return c[-1][-1]
+
 if __name__ == '__main__':
     def test_cut_rod():
         print '> test_cut_rod'
@@ -43,7 +56,15 @@ if __name__ == '__main__':
             r = a.cut(p, n)
             print 'r{} = {}'.format(n, r)
 
+    def test_lcs_length():
+        a = LCSLength()
+        X = ['A', 'B', 'C', 'B', 'D', 'A', 'B']
+        Y = ['B', 'D', 'C', 'A', 'B', 'A']
+        q = a.lcs_length(X, Y)
+        print 'LCS length = {}'.format(q)
+
     def main():
-        test_cut_rod()
+        #test_cut_rod()
+        test_lcs_length()
 
     main()
