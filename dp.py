@@ -46,10 +46,18 @@ class LCSLength(object):
                     c[i][j] = max(c[i-1][j], c[i][j-1])
         return c[-1][-1]
 
+class ClimbStairs(object):
+    def climb(self, n):
+        f = [0] * (n+1)
+        f[1] = 1
+        f[2] = 2
+        for i in xrange(3, n+1):
+            f[i] = f[i-1] + f[i-2]
+        return f[-1]
+
 if __name__ == '__main__':
     def test_cut_rod():
         print '> test_cut_rod'
-
         a = CutRod()
         p = [0, 1, 5, 8, 9, 10, 17, 17, 20, 24, 30]
         for n in xrange(1, 11):
@@ -57,14 +65,23 @@ if __name__ == '__main__':
             print 'r{} = {}'.format(n, r)
 
     def test_lcs_length():
+        print '> test_lcs_length'
         a = LCSLength()
         X = ['A', 'B', 'C', 'B', 'D', 'A', 'B']
         Y = ['B', 'D', 'C', 'A', 'B', 'A']
         q = a.lcs_length(X, Y)
         print 'LCS length = {}'.format(q)
 
+    def test_climb_stairs():
+        print '> test_climb_stairs'
+        a = ClimbStairs()
+        n = 5
+        q = a.climb(n)
+        print 'f[{}] = {}'.format(n, q)
+
     def main():
         #test_cut_rod()
-        test_lcs_length()
+        #test_lcs_length()
+        test_climb_stairs()
 
     main()
