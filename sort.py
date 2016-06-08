@@ -134,10 +134,16 @@ def quicksort_3(a):
     sort(a, 0, len(a) - 1)
 
 def heapsort(a):
+    # zero-based indexing
+    def parent(k):
+        return (k-1) / 2
+
+    def lchild(k):
+        return 2*k + 1
+
     def swim(k):
         while True:
-            # zero-based indexing
-            j = (k - 1) / 2
+            j = parent(k)
             if j < 0 or not less(a[j], a[k]):
                 break
             exch(a, k, j)
@@ -145,8 +151,7 @@ def heapsort(a):
 
     def sink(k, hi):
         while True:
-            # zero-based indexing
-            j = 2 * k + 1
+            j = lchild(k)
             if j < hi and less(a[j], a[j+1]):
                 j += 1
             if j > hi or not less(a[k], a[j]):
@@ -204,10 +209,10 @@ if __name__ == '__main__':
         #selection_sort(a)
         #insertion_sort(a)
         #bubble_sort(a)
-        mergesort(a)
+        #mergesort(a)
         #quicksort(a)
         #quicksort_3(a)
-        #heapsort(a)
+        heapsort(a)
         #counting_sort(a, 10)
         assert(is_sorted(a))
 
