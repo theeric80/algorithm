@@ -56,7 +56,7 @@ def mergesort(a):
     # Top-down
     def sort(a, lo, hi):
         if hi <= lo: return
-        mid = (lo + hi) / 2
+        mid = lo + (hi-lo)/2
         sort(a, lo, mid)
         sort(a, mid+1, hi)
         merge(a, lo, mid, hi)
@@ -65,16 +65,14 @@ def mergesort(a):
     def sort_b(a):
         N = len(a)
         last = N - 1
-        #less_than_N = lambda x: x < N
-        less_than_N = partial(operator.gt, N)
-        for sz in takewhile(less_than_N, (2**i for i in count(0))):
-            for lo in xrange(0, N, sz+sz):
+        for sz in takewhile(lambda x:x<N, (2**i for i in count(0))):
+            for lo in xrange(0, N-sz+1, sz+sz):
                 mid = lo + sz - 1
                 hi = min(lo + sz + sz - 1, last)
                 merge(a, lo, mid, hi)
 
-    sort(a, 0, len(a) - 1)
-    #sort_b(a);
+    #sort(a, 0, len(a)-1)
+    sort_b(a);
 
 def quicksort(a):
     # Hoare partition
@@ -205,8 +203,8 @@ if __name__ == '__main__':
         random.shuffle(a)
         #selection_sort(a)
         #insertion_sort(a)
-        bubble_sort(a)
-        #mergesort(a)
+        #bubble_sort(a)
+        mergesort(a)
         #quicksort(a)
         #quicksort_3(a)
         #heapsort(a)
