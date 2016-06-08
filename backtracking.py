@@ -28,7 +28,7 @@ class EightQueensPuzzle(object):
         queens = []
         self.solve(n, 0, queens)
 
-    def valid(self, queens, row, col):
+    def valid(self, row, col, queens):
         for r, c in queens:
             if row == r:           return False  # check row
             if col == c:           return False  # check column
@@ -43,7 +43,7 @@ class EightQueensPuzzle(object):
             return True
 
         for i in xrange(n):
-            if self.valid(queens, i, col):
+            if self.valid(i, col, queens):
                 queens.append((i, col))           # place this queen in board[i][col]
                 if self.solve(n, col+1, queens):  # place rest of the queens
                     return True
