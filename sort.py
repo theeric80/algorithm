@@ -13,25 +13,27 @@ def is_sorted(iterable):
 
 def selection_sort(a):
     N = len(a)
-    for i in xrange(N - 1):
-        j = i
-        unsorted = islice(a, j, None)
-        j = min(enumerate(unsorted, j), key=operator.itemgetter(1))[0]
-        exch(a, i, j)
+    for i in xrange(N-1):
+        _min = i
+        for j in xrange(i+1, N):
+            if less(a[j], a[_min]):
+                _min = j
+        exch(a, i, _min)
 
 def insertion_sort(a):
     N = len(a)
     for i in xrange(1, N):
-        _sorted = (j for j in xrange(i, 0, -1))
-        for j in takewhile(lambda j: less(a[j], a[j-1]), _sorted):
+        for j in xrange(i, 0, -1):
+            if not less(a[j], a[j-1]):
+                break
             exch(a, j, j-1)
 
 def bubble_sort(a):
     N = len(a)
-    for i in xrange(0, N):
-        unsorted = (j for j in xrange(1, N-i))
-        for j in ifilter(lambda j: less(a[j], a[j-1]), unsorted):
-            exch(a, j, j-1)
+    for i in xrange(N-1):
+        for j in xrange(N-1, i, -1):
+            if less(a[j], a[j-1]):
+                exch(a, j, j-1)
 
 def mergesort(a):
     def merge(a, lo, mid, hi):
@@ -203,9 +205,9 @@ if __name__ == '__main__':
         random.shuffle(a)
         #selection_sort(a)
         #insertion_sort(a)
-        #bubble_sort(a)
+        bubble_sort(a)
         #mergesort(a)
-        quicksort(a)
+        #quicksort(a)
         #quicksort_3(a)
         #heapsort(a)
         #counting_sort(a, 10)
