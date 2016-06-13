@@ -55,6 +55,19 @@ class ClimbStairs(object):
             f[i] = f[i-1] + f[i-2]
         return f[-1]
 
+class Knapsack(object):
+    def pack(self, items, w):
+        n = len(items)
+        m = [[0]*(w+1) for i in xrange(n+1)]
+        for i in xrange(1, n+1):
+            for j in xrange(0, w+1):
+                vi, wi = items[i-1]
+                if wi > j:
+                    m[i][j] = m[i-1][j]
+                else:
+                    m[i][j] = max(m[i-1][j], m[i-1][j-wi] + vi)
+        return m[-1][-1]
+
 if __name__ == '__main__':
     def test_cut_rod():
         print '> test_cut_rod'
@@ -79,9 +92,18 @@ if __name__ == '__main__':
         q = a.climb(n)
         print 'f[{}] = {}'.format(n, q)
 
+    def test_knapsack():
+        print '> test_knapsack'
+        items = [(60,10), (100,20), (120,30)]
+        w = 50
+        q = Knapsack().pack(items, w)
+        print 'items = {}, w = {}'.format(items, w)
+        print 'result = {}'.format(q)
+
     def main():
         #test_cut_rod()
         #test_lcs_length()
-        test_climb_stairs()
+        #test_climb_stairs()
+        test_knapsack()
 
     main()
