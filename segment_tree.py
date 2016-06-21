@@ -31,6 +31,25 @@ class SegmentTree(object):
 
         self._sum[i] = self._sum[l] + self._sum[r]
 
+    def _update(self, k, val, lo, hi, i):
+        if lo == hi:
+            self._sum[i] = val
+            return
+
+        mid = lo + (hi-lo)/2
+        l, r = 2*i, 2*i+1
+
+        if k <= mid:
+            self._update(k, val, lo, mid, l)
+        if k > mid:
+            self._update(k, val, mid+1, hi, r)
+
+        self._sum[i] = self._sum[l] + self._sum[r]
+
+    def update(self, k, val):
+        lo, hi = 0, self._n-1
+        self._update(k, val, lo, hi, 1)
+
     def _range_sum(self, l, r, lo, hi, i):
         if l <= lo and r >= hi:
             return self._sum[i]
@@ -54,6 +73,17 @@ def main():
     print 'seq = {}'.format(a)
 
     inputs = [(0,2), (1,3),(3,5)]
+    for l, r in inputs:
+        print '({}, {}) = {}'.format(l, r, t.range_sum(l,r))
+
+
+    k, val = 2, 12
+    t.update(k, val)
+    print 'update: a[{}] = {}'.format(k, val)
+
+    a[k] = val
+    print 'seq = {}'.format(a)
+
     for l, r in inputs:
         print '({}, {}) = {}'.format(l, r, t.range_sum(l,r))
 
