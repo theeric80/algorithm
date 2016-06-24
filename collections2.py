@@ -57,6 +57,12 @@ class ST(object):
     def keys(self):
         return None
 
+    def floor(self, key):
+        return None
+
+    def ceiling(self, key):
+        return None
+
 class BinarySearchST(ST):
     def __init__(self):
         self._keys = []
@@ -133,6 +139,14 @@ class BST(ST):
                 yield current._val
                 current = current._right
 
+    def floor(self, key):
+        node = self._floor(self._root, key)
+        return node._key if node is not None else None
+
+    def ceiling(self, key):
+        node = self._ceiling(self._root, key)
+        return node._key if node is not None else None
+
     def _get(self, x, key):
         if x is None:       return None
         if   key < x._key:  return self._get(x._left, key)
@@ -175,6 +189,20 @@ class BST(ST):
         # update nodes on search path
         for x in stack:
             x._N = self._size(x._left) + self._size(x._right) + 1
+
+    def _floor(self, x, key):
+        if x is None:       return None
+        if   key == x._key: return x
+        elif key < x._key:  return self._floor(x._left, key)
+        t = self._floor(x._right, key)  # key > x._key
+        return t if t is not None else x
+
+    def _ceiling(self, x, key):
+        if x is None:       return None
+        if   key == x._key: return x
+        elif key > x._key:  return self._ceiling(x._right, key)
+        t = self._ceiling(x._left, key)  # key < x._key
+        return t if t is not None else x
 
     def _size(self, x):
         return 0 if x is None else x._N
@@ -248,5 +276,24 @@ class RedBlackBST(BST):
             super(RedBlackBST.Node, self).__init__(key, val, N)
             self._color = color
 
+def _test_BST():
+    t = BST()
+    t.put(3, 3)
+    t.put(1, 1)
+    t.put(5, 5)
+    print '--- test_BST'
+    print 'keys() = {}'.format(list(t.keys()))
+    keys = [0,1,2,3,4,5,6]
+    for key in keys:
+        print 'get({}) = {}'.format(key, t.get(key))
+    for key in keys:
+        print 'floor({}) = {}'.format(key, t.floor(key))
+    for key in keys:
+        print 'ceiling({}) = {}'.format(key, t.ceiling(key))
+    print '--- test_BST end'
+
+def main():
+    _test_BST()
+
 if __name__ == '__main__':
-    pass
+    main()
